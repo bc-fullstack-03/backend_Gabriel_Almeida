@@ -21,8 +21,7 @@ public class Post {
     private UUID userId;
     private String content;
 
-    List<String> love = new ArrayList<>();
-    List<String> share = new ArrayList<>();
+    List<String> like = new ArrayList<>();
     List<Comment> comment =  new ArrayList<>();
 
 }

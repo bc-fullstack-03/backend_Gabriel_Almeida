@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -17,11 +19,12 @@ public class Comment {
     @Id
     private UUID id;
 
-    private UUID userId;
+    private UUID authorId;
 
-    private String name;
+    private String authorName;
 
     private String content;
 
+    List<String> like = new ArrayList<>();
 
 }

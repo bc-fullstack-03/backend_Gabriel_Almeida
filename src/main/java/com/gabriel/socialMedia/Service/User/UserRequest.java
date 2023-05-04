@@ -7,5 +7,6 @@ public class UserRequest {
     public String name;
     public String email;
     public String password;
+    public String photoUri;
 
 }

@@ -1,4 +1,4 @@
-package com.gabriel.socialMedia.Api;
+package com.gabriel.socialMedia.Api.User;
 
 import com.gabriel.socialMedia.Service.User.UserRequest;
 import com.gabriel.socialMedia.Service.User.UserService;
@@ -18,7 +18,7 @@ public class UserController {
     private UserService service;
 
     @PostMapping()
-    public ResponseEntity<String> createUser(@RequestBody UserRequest userRequest){
+    public ResponseEntity<String> createUser(@RequestBody UserRequest userRequest) throws Exception {
        var response  = service.createUser(userRequest);
        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

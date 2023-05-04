@@ -20,15 +20,17 @@ public class User {
     private String name;
     private String email;
     private String password;
-    
+    private String photoUri;
+
     List<String> following = new ArrayList<>();
     List<String> follower = new ArrayList<>();
 
-    public User( String name, String email, String password) {
+    public User( String name, String email, String password, String photoUri) {
         this.setId();
         this.name = name;
         this.email = email;
         this.password = password;
+        this.photoUri = photoUri;
     }
 
     protected void setId(){

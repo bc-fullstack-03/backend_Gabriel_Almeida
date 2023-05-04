@@ -13,8 +13,13 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository repository;
 
-    public String createUser(UserRequest userRequest){
-        var user = new User(userRequest.name, userRequest.email, userRequest.password);
+    public String createUser(UserRequest userRequest) throws Exception {
+        var user = new User(userRequest.name, userRequest.email, userRequest.password, userRequest.photoUri);
+
+        if(!repository.findUserByEmail(userRequest.email).isEmpty()){
+            throw new Exception("Usuário já existe");
+
+        }
         repository.save(user);
         return user.getId().toString();
     }
@@ -23,6 +28,10 @@ public class UserServiceImpl implements UserService {
         var user = repository.findUserByEmail(email).get();
         var response = new UserResponse(user.getId(),user.getName(), user.getEmail());
         return response;
+    }
+
+    public User getUser(String email){
+        return repository.findUserByEmail(email).get();
     }
 
 }
