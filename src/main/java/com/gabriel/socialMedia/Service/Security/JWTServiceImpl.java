@@ -11,12 +11,12 @@ import java.util.Date;
 import java.util.UUID;
 
 @Service
-public class JWTServiceImpl implements  JwtService{
+public class JWTServiceImpl implements JwtService {
 
-    private final long  EXPIRATION_TIME = 7200000;
+    private final long EXPIRATION_TIME = 7200000;
     private final String KEY = "34743777217A25432A462D4A614E645267556B58703273357638782F413F4428";
 
-    public String generateToken(UUID userId){
+    public String generateToken(UUID userId) {
         return Jwts
                 .builder()
                 .setSubject(userId.toString())
@@ -26,9 +26,13 @@ public class JWTServiceImpl implements  JwtService{
                 .compact();
     }
 
-    public boolean isValidToken(String token, String userId){
-        var claims = Jwts.parserBuilder()
-                .setSigningKey(genSignKey()).build().parseClaimsJws(token).getBody();
+    public boolean isValidToken(String token, String userId) {
+        var claims = Jwts
+                .parserBuilder()
+                .setSigningKey(genSignKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
 
         var sub = claims.getSubject();
         var tExpiration = claims.getExpiration();
@@ -36,7 +40,7 @@ public class JWTServiceImpl implements  JwtService{
         return (sub.equals(userId) && !tExpiration.before(new Date()));
     }
 
-    private Key genSignKey(){
+    private Key genSignKey() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(KEY));
     }
 }

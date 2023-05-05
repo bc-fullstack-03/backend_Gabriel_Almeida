@@ -25,7 +25,7 @@ public class UserController {
 
     @PostMapping()
     public ResponseEntity<String> createUser(@RequestBody UserRequest userRequest) throws Exception {
-        if(jwtService.isValidToken(getToken(),getUserId())){
+        if(!jwtService.isValidToken(getToken(),getUserId())){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User not autehnticate");
         }
        var response  = service.createUser(userRequest);
@@ -39,7 +39,8 @@ public class UserController {
     }
 
     public String getToken(){
-        return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getHeader("Authorization");
+        var jwt =  ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getHeader("Authorization");
+        return jwt.substring(7);
     }
 
     public String getUserId(){
