@@ -25,11 +25,10 @@ public class User {
     List<String> following = new ArrayList<>();
     List<String> follower = new ArrayList<>();
 
-    public User( String name, String email, String password, String photoUri) {
+    public User( String name, String email, String photoUri) {
         this.setId();
         this.name = name;
         this.email = email;
-        this.password = password;
         this.photoUri = photoUri;
     }
 
