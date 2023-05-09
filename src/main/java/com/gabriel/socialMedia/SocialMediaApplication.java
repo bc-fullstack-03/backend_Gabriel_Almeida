@@ -1,5 +1,6 @@
 package com.gabriel.socialMedia;
 
+import lombok.NoArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -13,8 +14,4 @@ public class SocialMediaApplication {
 		SpringApplication.run(SocialMediaApplication.class, args);
 	}
 
-	@Bean
-	public PasswordEncoder passwordEncoder(){
-		return new BCryptPasswordEncoder();
-	}
 }

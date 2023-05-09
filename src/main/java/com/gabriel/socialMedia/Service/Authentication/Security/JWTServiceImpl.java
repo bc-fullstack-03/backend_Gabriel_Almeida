@@ -1,5 +1,6 @@
-package com.gabriel.socialMedia.Service.Security;
+package com.gabriel.socialMedia.Service.Authentication.Security;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.security.Key;
 import java.util.Date;
 import java.util.UUID;
+import java.util.function.Function;
 
 @Service
 public class JWTServiceImpl implements JwtService {
@@ -22,25 +24,37 @@ public class JWTServiceImpl implements JwtService {
                 .setSubject(userId.toString())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(genSignKey(), SignatureAlgorithm.HS256)
+                .signWith(genSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
     public boolean isValidToken(String token, String userId) {
+        var sub = getClaim(token, Claims::getSubject);
+        var tExpiration = getClaim(token, Claims::getExpiration);
+
+        if (!sub.equals(userId)) {
+            return false;
+        }
+
+        if (tExpiration.before(new Date())) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private <T> T getClaim(String token, Function<Claims, T> claimsResolver) {
         var claims = Jwts
                 .parserBuilder()
-                .setSigningKey(genSignKey())
+                .setSigningKey(genSignInKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
 
-        var sub = claims.getSubject();
-        var tExpiration = claims.getExpiration();
-
-        return (sub.equals(userId) && !tExpiration.before(new Date()));
+        return claimsResolver.apply(claims);
     }
 
-    private Key genSignKey() {
+    private Key genSignInKey() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(KEY));
     }
 }

@@ -1,8 +1,9 @@
 package com.gabriel.socialMedia.Service.Authentication;
 
-import com.gabriel.socialMedia.Service.Security.JwtService;
+import com.gabriel.socialMedia.Service.Authentication.Security.JwtService;
 import com.gabriel.socialMedia.Service.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -10,9 +11,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Autowired
     private UserService userService;
-
     @Autowired
     private JwtService jwtService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public AuthenticateResponse authenticate(AuthenticateRequest request) {
@@ -22,7 +24,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return null;
         }
 
-        if(!user.getPassword().equals(request.getPassword())){
+        if(!passwordEncoder.matches(request.getPassword(),user.getPassword())){
             return null;
         }
 

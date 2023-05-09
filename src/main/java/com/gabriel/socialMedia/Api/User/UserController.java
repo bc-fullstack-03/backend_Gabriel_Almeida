@@ -1,6 +1,6 @@
 package com.gabriel.socialMedia.Api.User;
 
-import com.gabriel.socialMedia.Service.Security.JwtService;
+import com.gabriel.socialMedia.Service.Authentication.Security.JwtService;
 import com.gabriel.socialMedia.Service.User.UserRequest;
 import com.gabriel.socialMedia.Service.User.UserService;
 import com.gabriel.socialMedia.Service.User.UserResponse;
@@ -10,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/user")

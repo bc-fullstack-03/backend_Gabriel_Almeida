@@ -9,4 +9,5 @@ public interface UserService {
     String createUser(UserRequest userRequest) throws Exception;
     UserResponse findUserByEmail(String email);
     User getUser(String email);
+    User getUserById(UUID id);
 }

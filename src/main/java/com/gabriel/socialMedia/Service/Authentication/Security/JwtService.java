@@ -1,4 +1,4 @@
-package com.gabriel.socialMedia.Service.Security;
+package com.gabriel.socialMedia.Service.Authentication.Security;
 
 import java.util.UUID;
 

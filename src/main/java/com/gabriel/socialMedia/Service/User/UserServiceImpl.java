@@ -9,14 +9,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository repository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+   // @Autowired
+   // private PasswordEncoder passwordEncoder;
+
 
     public String createUser(UserRequest userRequest) throws Exception {
         var user = new User(userRequest.name, userRequest.email, userRequest.photoUri);
@@ -25,8 +27,8 @@ public class UserServiceImpl implements UserService {
             throw new Exception("Usuário já existe");
 
         }
-        var hash = passwordEncoder.encode(userRequest.password);
-        user.setPassword(hash);
+        //var hash = passwordEncoder.encode(userRequest.password);
+       // user.setPassword(hash);
         repository.save(user);
 
         return user.getId().toString();
@@ -40,6 +42,9 @@ public class UserServiceImpl implements UserService {
 
     public User getUser(String email){
         return repository.findUserByEmail(email).get();
+    }
+    public User getUserById(UUID id) {
+        return repository.findUserById(id).get();
     }
 
 }
