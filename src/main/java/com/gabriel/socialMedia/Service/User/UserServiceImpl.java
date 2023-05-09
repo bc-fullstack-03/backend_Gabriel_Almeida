@@ -2,10 +2,13 @@ package com.gabriel.socialMedia.Service.User;
 
 import com.gabriel.socialMedia.Entities.User;
 import com.gabriel.socialMedia.Repository.UserRepository;
+import com.gabriel.socialMedia.Service.FileUpload.FileUploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
@@ -15,6 +18,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository repository;
+    @Autowired
+    private FileUploadService fileUploadService;
 
    // @Autowired
    // private PasswordEncoder passwordEncoder;
@@ -45,6 +50,23 @@ public class UserServiceImpl implements UserService {
     }
     public User getUserById(UUID id) {
         return repository.findUserById(id).get();
+    }
+
+    public void uploadPhotoProfile(MultipartFile photo) throws Exception {
+        var user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        var photoUri = "";
+
+        try {
+            var fileName = user.getId() + "." + photo.getOriginalFilename()
+                    .substring(photo.getOriginalFilename().lastIndexOf(".") + 1);
+
+            photoUri = fileUploadService.upload(photo, fileName);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+
+        user.setPhotoUri(photoUri);
+        repository.save(user);
     }
 
 }

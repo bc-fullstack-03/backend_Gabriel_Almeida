@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("api/v1/user")
@@ -34,6 +35,18 @@ public class UserController {
     public ResponseEntity<UserResponse> getUser(String email){
         var reponse = service.findUserByEmail(email);
         return ResponseEntity.ok().body(reponse);
+    }
+
+
+    @PostMapping("/photo/upload")
+    public ResponseEntity uploadPhotoProfile(@RequestParam("photo") MultipartFile photo) {
+        try {
+            service.uploadPhotoProfile(photo);
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     public String getToken(){
