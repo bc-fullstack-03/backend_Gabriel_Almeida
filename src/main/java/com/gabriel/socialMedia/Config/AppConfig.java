@@ -1,4 +1,4 @@
-package com.gabriel.socialMedia.Service.Config;
+package com.gabriel.socialMedia.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

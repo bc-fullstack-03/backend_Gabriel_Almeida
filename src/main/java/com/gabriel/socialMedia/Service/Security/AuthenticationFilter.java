@@ -1,4 +1,4 @@
-package com.gabriel.socialMedia.Service.Authentication.Security;
+package com.gabriel.socialMedia.Service.Security;
 
 import com.gabriel.socialMedia.Service.User.UserService;
 import jakarta.servlet.FilterChain;
@@ -39,11 +39,13 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
+
+
         var token = request.getHeader("Authorization");
         var userId = request.getHeader("RequestedBy");
 
         if (token == null || userId == null || !token.startsWith("Bearer ")) {
-            response.getWriter().write("User not authenticated!");
+            response.getWriter().write(" not authenticated!");
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return;
         }

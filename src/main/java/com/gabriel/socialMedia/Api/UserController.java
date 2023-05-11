@@ -1,6 +1,8 @@
-package com.gabriel.socialMedia.Api.User;
+package com.gabriel.socialMedia.Api;
 
-import com.gabriel.socialMedia.Service.Authentication.Security.JwtService;
+import com.gabriel.socialMedia.Entities.IdObjectEntity;
+import com.gabriel.socialMedia.Service.ResponseObjectService;
+import com.gabriel.socialMedia.Service.Security.JwtService;
 import com.gabriel.socialMedia.Service.User.UserRequest;
 import com.gabriel.socialMedia.Service.User.UserService;
 import com.gabriel.socialMedia.Service.User.UserResponse;
@@ -22,19 +24,20 @@ public class UserController {
     @Autowired
     private JwtService jwtService;
 
+    @PostMapping()
+    public ResponseEntity<ResponseObjectService> findAllUsers() {
+        return new ResponseEntity<ResponseObjectService>(service.findAll(), HttpStatus.OK);
+    }
+
     @PostMapping("/create")
     public ResponseEntity<String> createUser(@RequestBody UserRequest userRequest) throws Exception {
-        if(!jwtService.isValidToken(getToken(),getUserId())){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User not autehnticate");
-        }
        var response  = service.createUser(userRequest);
        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping()
-    public ResponseEntity<UserResponse> getUser(String email){
-        var reponse = service.findUserByEmail(email);
-        return ResponseEntity.ok().body(reponse);
+    @PostMapping("/profile")
+    public ResponseEntity<ResponseObjectService> findById(@RequestBody IdObjectEntity inputId) {
+        return new ResponseEntity<ResponseObjectService>(service.findById(inputId.getId()), HttpStatus.OK);
     }
 
 

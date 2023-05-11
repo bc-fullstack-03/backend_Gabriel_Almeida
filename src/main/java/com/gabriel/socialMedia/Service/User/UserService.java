@@ -2,14 +2,16 @@ package com.gabriel.socialMedia.Service.User;
 
 
 import com.gabriel.socialMedia.Entities.User;
+import com.gabriel.socialMedia.Service.ResponseObjectService;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
 public interface UserService {
     String createUser(UserRequest userRequest) throws Exception;
-    UserResponse findUserByEmail(String email);
+    void uploadPhotoProfile(MultipartFile photo) throws Exception;
     User getUser(String email);
     User getUserById(UUID id);
-    void uploadPhotoProfile(MultipartFile photo) throws Exception;
+    ResponseObjectService findAll();
+    ResponseObjectService findById(UUID id);
 }

@@ -1,4 +1,4 @@
-package com.gabriel.socialMedia.Api.Authentication;
+package com.gabriel.socialMedia.Api;
 
 import com.gabriel.socialMedia.Service.Authentication.AuthenticateRequest;
 import com.gabriel.socialMedia.Service.Authentication.AuthenticateResponse;
@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/v1/autehntication")
+@RequestMapping("api/v1/authentication")
 public class AuthenticationController {
 
     @Autowired
     private AuthenticationService service;
 
     @PostMapping()
-    public ResponseEntity<AuthenticateResponse> authenticate(@RequestBody AuthenticateRequest request){
+    public ResponseEntity<AuthenticateResponse> authenticate(@RequestBody AuthenticateRequest request) throws Exception {
         return ResponseEntity.ok().body(service.authenticate(request));
     }
 }

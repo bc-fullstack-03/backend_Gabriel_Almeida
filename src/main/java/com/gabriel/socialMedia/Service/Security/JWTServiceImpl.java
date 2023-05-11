@@ -1,4 +1,4 @@
-package com.gabriel.socialMedia.Service.Authentication.Security;
+package com.gabriel.socialMedia.Service.Security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

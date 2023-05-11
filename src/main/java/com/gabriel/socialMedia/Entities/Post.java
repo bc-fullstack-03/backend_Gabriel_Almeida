@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -17,9 +18,12 @@ import java.util.UUID;
 public class Post {
 
     @Id
-    private UUID id;
-    private UUID userId;
+    private String id;
+    private String userId;
+    private String originalUserId;
     private String content;
+    private String image;
+    private Instant createdAt;
 
     List<String> like = new ArrayList<>();
     List<Comment> comment =  new ArrayList<>();

@@ -3,6 +3,7 @@ package com.gabriel.socialMedia.Service.User;
 import com.gabriel.socialMedia.Entities.User;
 import com.gabriel.socialMedia.Repository.UserRepository;
 import com.gabriel.socialMedia.Service.FileUpload.FileUploadService;
+import com.gabriel.socialMedia.Service.ResponseObjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -23,6 +25,13 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    public ResponseObjectService findAll() {
+        ResponseObjectService responseObj = new ResponseObjectService();
+        responseObj.setPayload(repository.findAll());
+        responseObj.setStatus("success");
+        responseObj.setMessage("success");
+        return responseObj;
+    }
     public String createUser(UserRequest userRequest) throws Exception {
         var user = new User(userRequest.name, userRequest.email, userRequest.photoUri);
 
@@ -37,17 +46,27 @@ public class UserServiceImpl implements UserService {
         return user.getId().toString();
     }
 
-    public UserResponse findUserByEmail(String email){
-        var user = repository.findUserByEmail(email).get();
-        var response = new UserResponse(user.getId(),user.getName(), user.getEmail(), user.getPhotoUri());
-        return response;
+    public ResponseObjectService findById(UUID id) {
+        ResponseObjectService responseObj = new ResponseObjectService();
+        Optional<User> optUser = repository.findById(id);
+        if (optUser.isEmpty()) {
+            responseObj.setStatus("fail");
+            responseObj.setMessage("user id: " + id + " not existed");
+            responseObj.setPayload(null);
+            return responseObj;
+        } else {
+            responseObj.setPayload(optUser.get());
+            responseObj.setStatus("success");
+            responseObj.setMessage("success");
+            return responseObj;
+        }
     }
 
-    public User getUser(String email){
-        return repository.findUserByEmail(email).get();
-    }
     public User getUserById(UUID id) {
         return repository.findUserById(id).get();
+    }
+    public User getUser(String email){
+        return repository.findUserByEmail(email).get();
     }
 
     public void uploadPhotoProfile(MultipartFile photo) throws Exception {
