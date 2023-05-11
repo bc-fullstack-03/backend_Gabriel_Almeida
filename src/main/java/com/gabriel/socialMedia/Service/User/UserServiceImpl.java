@@ -20,10 +20,8 @@ public class UserServiceImpl implements UserService {
     private UserRepository repository;
     @Autowired
     private FileUploadService fileUploadService;
-
-   // @Autowired
-   // private PasswordEncoder passwordEncoder;
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public String createUser(UserRequest userRequest) throws Exception {
         var user = new User(userRequest.name, userRequest.email, userRequest.photoUri);
@@ -32,8 +30,8 @@ public class UserServiceImpl implements UserService {
             throw new Exception("Usuário já existe");
 
         }
-        //var hash = passwordEncoder.encode(userRequest.password);
-       // user.setPassword(hash);
+        var hash = passwordEncoder.encode(userRequest.password);
+        user.setPassword(hash);
         repository.save(user);
 
         return user.getId().toString();
@@ -41,7 +39,7 @@ public class UserServiceImpl implements UserService {
 
     public UserResponse findUserByEmail(String email){
         var user = repository.findUserByEmail(email).get();
-        var response = new UserResponse(user.getId(),user.getName(), user.getEmail());
+        var response = new UserResponse(user.getId(),user.getName(), user.getEmail(), user.getPhotoUri());
         return response;
     }
 

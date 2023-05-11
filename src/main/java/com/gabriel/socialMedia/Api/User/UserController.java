@@ -22,7 +22,7 @@ public class UserController {
     @Autowired
     private JwtService jwtService;
 
-    @PostMapping()
+    @PostMapping("/create")
     public ResponseEntity<String> createUser(@RequestBody UserRequest userRequest) throws Exception {
         if(!jwtService.isValidToken(getToken(),getUserId())){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User not autehnticate");
