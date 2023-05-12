@@ -14,4 +14,7 @@ public interface UserService {
     User getUserById(UUID id);
     ResponseObjectService findAll();
     ResponseObjectService findById(UUID id);
+    ResponseObjectService findFollowing(UUID id);
+    ResponseObjectService findFollower(UUID id);
+    ResponseObjectService update(User inputUser);
 }

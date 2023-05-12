@@ -22,8 +22,8 @@ public class User {
     private String password;
     private String photoUri;
 
-    List<String> following = new ArrayList<>();
-    List<String> follower = new ArrayList<>();
+    List<UUID> following = new ArrayList<>();
+    List<UUID> follower = new ArrayList<>();
 
     public User( String name, String email, String photoUri) {
         this.setId();

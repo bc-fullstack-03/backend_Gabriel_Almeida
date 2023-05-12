@@ -1,6 +1,7 @@
 package com.gabriel.socialMedia.Api;
 
 import com.gabriel.socialMedia.Entities.IdObjectEntity;
+import com.gabriel.socialMedia.Entities.User;
 import com.gabriel.socialMedia.Service.ResponseObjectService;
 import com.gabriel.socialMedia.Service.Security.JwtService;
 import com.gabriel.socialMedia.Service.User.UserRequest;
@@ -40,6 +41,20 @@ public class UserController {
         return new ResponseEntity<ResponseObjectService>(service.findById(inputId.getId()), HttpStatus.OK);
     }
 
+    @PostMapping("/getfollowing")
+    public ResponseEntity<ResponseObjectService> findFollowing(@RequestBody IdObjectEntity inputId) {
+        return new ResponseEntity<ResponseObjectService>(service.findFollowing(inputId.getId()), HttpStatus.OK);
+    }
+
+    @PostMapping("/getfollower")
+    public ResponseEntity<ResponseObjectService> findFollower(@RequestBody IdObjectEntity inputId) {
+        return new ResponseEntity<ResponseObjectService>(service.findFollower(inputId.getId()), HttpStatus.OK);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<ResponseObjectService> update(@RequestBody User inputUser) {
+        return new ResponseEntity<ResponseObjectService>(service.update(inputUser), HttpStatus.OK);
+    }
 
     @PostMapping("/photo/upload")
     public ResponseEntity uploadPhotoProfile(@RequestParam("photo") MultipartFile photo) {
