@@ -1,8 +1,6 @@
 package com.gabriel.socialMedia.Entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,18 +12,27 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "Post")
 public class Post {
 
-    @Id
-    private String id;
-    private String userId;
-    private String originalUserId;
+    private UUID id;
+    private UUID userId;
+    private UUID originalUserId;
     private String content;
     private String image;
     private Instant createdAt;
 
-    List<String> like = new ArrayList<>();
+    List<UUID> like = new ArrayList<>();
     List<Comment> comment =  new ArrayList<>();
 
+    public Post( UUID userId, UUID originalUserId, String content, String image, Instant createdAt) {
+        this.id = UUID.randomUUID();
+        this.userId = userId;
+        this.originalUserId = originalUserId;
+        this.content = content;
+        this.image = image;
+        this.createdAt = createdAt;
+    }
+
+
 }
+

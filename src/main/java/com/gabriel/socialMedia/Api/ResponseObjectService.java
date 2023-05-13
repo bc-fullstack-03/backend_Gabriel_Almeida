@@ -1,4 +1,4 @@
-package com.gabriel.socialMedia.Service;
+package com.gabriel.socialMedia.Api;
 
 public class ResponseObjectService {
     private String status;

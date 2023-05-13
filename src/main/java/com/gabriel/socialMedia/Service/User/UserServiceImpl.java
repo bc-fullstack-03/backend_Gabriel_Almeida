@@ -1,9 +1,11 @@
 package com.gabriel.socialMedia.Service.User;
 
+import com.gabriel.socialMedia.Entities.DoubleIdObjectEntity;
+import com.gabriel.socialMedia.Entities.IdObjectEntity;
 import com.gabriel.socialMedia.Entities.User;
 import com.gabriel.socialMedia.Repository.UserRepository;
 import com.gabriel.socialMedia.Service.FileUpload.FileUploadService;
-import com.gabriel.socialMedia.Service.ResponseObjectService;
+import com.gabriel.socialMedia.Api.ResponseObjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -154,6 +156,90 @@ public class UserServiceImpl implements UserService {
             }
         }
     }
+
+    public ResponseObjectService followUser(DoubleIdObjectEntity doubleId) {
+        // id1 - followed user, id2 - follower
+        ResponseObjectService responseObj = new ResponseObjectService();
+        Optional<User> optFollowedUser = repository.findById(doubleId.getId1());
+        Optional<User> optFollower = repository.findById(doubleId.getId2());
+        if (optFollowedUser.isEmpty() || optFollower.isEmpty()) {
+            responseObj.setStatus("fail");
+            responseObj.setMessage("invalid user id");
+            responseObj.setPayload(null);
+            return responseObj;
+        } else {
+            User followedUser = optFollowedUser.get();
+            User follower = optFollower.get();
+
+            // add to follower list
+            List<UUID> followerList = followedUser.getFollower();
+            if (followerList == null) {
+                followerList = new ArrayList<>();
+            }
+            followerList.add(follower.getId());
+            followedUser.setFollower(followerList);
+
+            // add to following list
+            List<UUID> followingList = follower.getFollowing();
+            if (followingList == null) {
+                followingList = new ArrayList<>();
+            }
+            followingList.add(followedUser.getId());
+            follower.setFollowing(followingList);
+
+            repository.save(followedUser);
+            repository.save(follower);
+
+            responseObj.setStatus("success");
+            responseObj.setMessage(
+                    "User id " + follower.getId() + " successfully followed user id " + followedUser.getId());
+            responseObj.setPayload(new IdObjectEntity(doubleId.getId1()));
+            return responseObj;
+        }
+    }
+
+    public ResponseObjectService unfollowUser(DoubleIdObjectEntity doubleId) {
+        // id1 - followed user, id2 - follower
+
+        ResponseObjectService responseObj = new ResponseObjectService();
+        Optional<User> optFollowedUser = repository.findById(doubleId.getId1());
+        Optional<User> optFollower = repository.findById(doubleId.getId2());
+        if (optFollowedUser.isEmpty() || optFollower.isEmpty()) {
+            responseObj.setStatus("fail");
+            responseObj.setMessage("invalid user id");
+            responseObj.setPayload(null);
+            return responseObj;
+        } else {
+            User followedUser = optFollowedUser.get();
+            User follower = optFollower.get();
+
+            // add to follower list
+            List<UUID> followerList = followedUser.getFollower();
+            if (followerList == null) {
+                followerList = new ArrayList<>();
+            }
+            followerList.remove(follower.getId());
+            followedUser.setFollower(followerList);
+
+            // add to following list
+            List<UUID> followingList = follower.getFollowing();
+            if (followingList == null) {
+                followingList = new ArrayList<>();
+            }
+            followingList.remove(followedUser.getId());
+            follower.setFollowing(followingList);
+
+            repository.save(followedUser);
+            repository.save(follower);
+
+            responseObj.setStatus("success");
+            responseObj.setMessage(
+                    "User id " + follower.getId() + " successfully unfollowed user id " + followedUser.getId());
+            responseObj.setPayload(new IdObjectEntity(doubleId.getId1()));
+            return responseObj;
+        }
+    }
+
 
     public User getUserById(UUID id) {
         return repository.findUserById(id).get();

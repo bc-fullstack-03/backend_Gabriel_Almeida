@@ -89,7 +89,6 @@
 			<artifactId>aws-java-sdk</artifactId>
 			<version>1.12.461</version>
 		</dependency>
-
 	</dependencies>
 
 	<build>

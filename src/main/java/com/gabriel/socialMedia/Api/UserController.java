@@ -1,12 +1,11 @@
 package com.gabriel.socialMedia.Api;
 
+import com.gabriel.socialMedia.Entities.DoubleIdObjectEntity;
 import com.gabriel.socialMedia.Entities.IdObjectEntity;
 import com.gabriel.socialMedia.Entities.User;
-import com.gabriel.socialMedia.Service.ResponseObjectService;
 import com.gabriel.socialMedia.Service.Security.JwtService;
 import com.gabriel.socialMedia.Service.User.UserRequest;
 import com.gabriel.socialMedia.Service.User.UserService;
-import com.gabriel.socialMedia.Service.User.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,6 +64,16 @@ public class UserController {
             return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
+    }
+
+    @PostMapping("/follow")
+    public ResponseEntity<ResponseObjectService> followUser(@RequestBody DoubleIdObjectEntity doubleId) {
+        return new ResponseEntity<ResponseObjectService>(service.followUser(doubleId), HttpStatus.OK);
+    }
+
+    @PostMapping("/unfollow")
+    public ResponseEntity<ResponseObjectService> unfollowUser(@RequestBody DoubleIdObjectEntity doubleId) {
+        return new ResponseEntity<ResponseObjectService>(service.unfollowUser(doubleId), HttpStatus.OK);
     }
 
     public String getToken(){

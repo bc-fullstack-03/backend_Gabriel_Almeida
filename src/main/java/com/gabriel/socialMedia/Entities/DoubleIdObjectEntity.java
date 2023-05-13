@@ -9,10 +9,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class IdObjectEntity {
-    private UUID id;
-
-    public IdObjectEntity(String id) {
-        this.id = UUID.fromString(id);
-    }
+public class DoubleIdObjectEntity {
+    private UUID id1;
+    private UUID id2;
 }
